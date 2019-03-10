@@ -12,4 +12,4 @@ elif  [ "${POSTFIX}" == "-prod" ]; then
 fi
 curl https://raw.githubusercontent.com/auto-mat/do-prace-na-kole-infrastructure/$BRANCH/restart_docker_containers > restart_docker_containers
 chmod +x restart_docker_containers
-sh restart_docker_containers
+bash restart_docker_containers
