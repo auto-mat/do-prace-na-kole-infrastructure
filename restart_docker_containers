@@ -1,0 +1,22 @@
+#!/bin/bash
+DOCKER_POSTFIX=$(cat postfix)
+TAG="latest"
+echo $DOCKER_POSTFIX
+POSTFIX=$(cat postfix)
+if [ "${POSTFIX}" == "-test" ]; then
+    BRANCH="devel"
+elif  [ "${POSTFIX}" == "-prod" ]; then
+    BRANCH="master"
+fi
+cd secrets ; git pull ; cd ..
+curl https://raw.githubusercontent.com/auto-mat/do-prace-na-kole-infrastructure/$BRANCH/docker-compose.yml > docker-compose.yml
+sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX  docker-compose down
+sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX  docker-compose rm
+sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX  docker-compose pull
+if [ -e worker ]; then
+    sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up  dpnk-worker dpnk-beat
+elif [ -e web ]; then
+    sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up  dpnk-web
+else
+    sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up
+fi
