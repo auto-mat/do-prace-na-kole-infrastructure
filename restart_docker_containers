@@ -10,15 +10,15 @@ elif  [ "${POSTFIX}" == "-prod" ]; then
 fi
 cd secrets ; git pull ; cd ..
 curl https://raw.githubusercontent.com/auto-mat/do-prace-na-kole-infrastructure/$BRANCH/docker-compose.yml > docker-compose.yml
-sudo docker rmi $(sudo docker images -q)
 sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX  docker-compose pull
 sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX  docker-compose down
 sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX  docker-compose rm
 sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX  docker-compose pull
 if [ -e worker ]; then
-    sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up -d dpnk-worker dpnk-beat &
+    sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up dpnk-worker dpnk-beat &
 elif [ -e web ]; then
-    sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up -d dpnk-web &
+    sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up dpnk-web &
 else
-    sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up -d &
+    sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up &
 fi
+sudo docker rmi $(sudo docker images -q)
