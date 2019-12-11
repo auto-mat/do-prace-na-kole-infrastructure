@@ -22,6 +22,7 @@ elif [ -e web ]; then
 else
     sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up &
 fi
+sleep 10
 if [[ $(sudo docker ps | wc -l ) = "1" ]]; then
     echo Docker failed to launch
 else
