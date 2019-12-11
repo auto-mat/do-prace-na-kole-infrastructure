@@ -22,4 +22,8 @@ elif [ -e web ]; then
 else
     sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up &
 fi
-sudo docker rmi $(sudo docker images -q)
+if [[ $(sudo docker ps | wc -l ) = "1" ]]; then
+    echo Docker failed to launch
+else
+    sudo docker rmi $(sudo docker images -q)
+fi
