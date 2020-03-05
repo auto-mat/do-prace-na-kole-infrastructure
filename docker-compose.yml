@@ -1,25 +1,35 @@
-# Django web server
-dpnk-web:
- hostname: dpnk-web
- image: "auto0mat/dopracenakole${DOCKER_POSTFIX}:${TAG}"
- net: "host"
- env_file:
-  - ./docker.env
+version: '3'
 
-# Celery worker
-dpnk-worker:
- hostname: dpnk-worker
- entrypoint: /home/aplikace/docker-celery-entrypoint.sh
- image: "auto0mat/dopracenakole${DOCKER_POSTFIX}:${TAG}"
- net: "host"
- env_file:
-  - ./docker.env
+services:
+  # Django web server
+  dpnk-web:
+    hostname: dpnk-web
+    image: "auto0mat/dopracenakole${DOCKER_POSTFIX}:${TAG}"
+    network_mode: "host"
+    command: --preload
+    env_file:
+      - ./docker.env
 
-# Celery worker
-dpnk-beat:
- hostname: dpnk-beat
- entrypoint: /home/aplikace/docker-celerybeat-entrypoint.sh
- image: "auto0mat/dopracenakole${DOCKER_POSTFIX}:${TAG}"
- net: "host"
- env_file:
-  - ./docker.env
+  nginx:
+    image: nginx:1.13
+    network_mode: "host"
+    volumes:
+      - ./ngnix/conf.d:/etc/nginx/conf.d
+
+  # Celery worker
+  dpnk-worker:
+    hostname: dpnk-worker
+    entrypoint: /home/aplikace/docker-celery-entrypoint.sh
+    image: "auto0mat/dopracenakole${DOCKER_POSTFIX}:${TAG}"
+    network_mode: "host"
+    env_file:
+      - ./docker.env
+
+  # Celery worker
+  dpnk-beat:
+    hostname: dpnk-beat
+    entrypoint: /home/aplikace/docker-celerybeat-entrypoint.sh
+    image: "auto0mat/dopracenakole${DOCKER_POSTFIX}:${TAG}"
+    network_mode: "host"
+    env_file:
+      - ./docker.env

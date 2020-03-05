@@ -10,6 +10,8 @@ elif  [ "${POSTFIX}" == "-prod" ]; then
 fi
 cd secrets ; git pull ; cd ..
 curl https://raw.githubusercontent.com/auto-mat/do-prace-na-kole-infrastructure/$BRANCH/docker-compose.yml > docker-compose.yml
+mkdir -p ngnix/conf.d/
+curl https://raw.githubusercontent.com/auto-mat/do-prace-na-kole-infrastructure/$BRANCH/ngnix/conf.d/local.conf > ngnix/conf.d/local.conf
 sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX  docker-compose pull
 sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX  docker-compose down
 sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX  docker-compose rm
