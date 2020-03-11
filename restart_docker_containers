@@ -20,7 +20,7 @@ sudo systemctl restart docker
 if [ -e worker ]; then
     sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up dpnk-worker dpnk-beat &
 elif [ -e web ]; then
-    sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up dpnk-web &
+    sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up dpnk-web nginx &
 else
     sudo env TAG=$TAG DOCKER_POSTFIX=$DOCKER_POSTFIX docker-compose up &
 fi

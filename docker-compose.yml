@@ -6,7 +6,6 @@ services:
     hostname: dpnk-web
     image: "auto0mat/dopracenakole${DOCKER_POSTFIX}:${TAG}"
     network_mode: "host"
-    command: --preload
     env_file:
       - ./docker.env
 
